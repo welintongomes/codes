@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Códigos</title>
+    <style>
+        /* Sistema de Abas */
+        .tabs {
+            display: flex;
+            background: #2c3e50;
+            margin: 0;
+            border-radius: 25px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px 20px;
+            background: transparent;
+            color: #ecf0f1;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .tab-btn.active {
+            background: #3498db;
+            color: white;
+            border-radius: 10px;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: #34495e;
+            border-radius: 25px;
+        }
+
+        /* Conteúdo das abas */
+        .tab-content {
+            padding: 30px;
+        }
+
+        .welcome-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .welcome-screen h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .welcome-screen p {
+            color: #7f8c8d;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .score {
+            font-size: 1.2em;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-block;
+        }
+
+        .welcome-screen {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .welcome-screen h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .welcome-screen p {
+            color: #7f8c8d;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .stats p {
+            font-size: 16px;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .question-type {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 20px 0;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .question-text {
+            font-size: 1.2em;
+            color: #2c3e50;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .speech-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .speech-btn:hover {
+            background: #2980b9;
+        }
+
+        .options-container {
+            display: grid;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .option {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            padding: 15px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .option:hover {
+            background: #e3f2fd;
+            border-color: #3498db;
+        }
+
+        .option.selected {
+            background: #3498db;
+            color: white;
+            border-color: #2980b9;
+        }
+
+        .option.correct {
+            background: #27ae60;
+            color: white;
+            border-color: #219a52;
+        }
+
+        .option.incorrect {
+            background: #e74c3c;
+            color: white;
+            border-color: #c0392b;
+        }
+
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .admin-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .admin-panel h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+            font-family: 'Courier New', monospace;
+        }
+
+        .questions-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        .question-item {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .question-item strong {
+            color: #2c3e50;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 80%;
+            max-height: 80%;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        textarea#codeInput {
+            width: 100%;
+            /* ou uma largura fixa ex: 600px */
+            height: 200px;
+            /* altura suficiente para exigir rolagem */
+            resize: vertical;
+            /* opcional: permite redimensionar verticalmente */
+            overflow: auto;
+            /* melhor que scroll: aparece só quando necessário */
+            font-family: monospace;
+            white-space: pre;
+            /* preserva espaços e quebras de linha */
+            line-height: 1.4;
+        }
+
+        textarea#explanation {
+            width: 100%;
+            height: 200px;
+            resize: vertical;
+            overflow: auto;
+            font-family: monospace;
+            white-space: pre;
+            line-height: 1.4;
+        }
+
+        textarea#optionsInput {
+            width: 100%;
+            height: 200px;
+            resize: vertical;
+            overflow: auto;
+            font-family: monospace;
+            white-space: pre;
+            line-height: 1.4;
+        }
+
+        .speech-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .speech-btn:hover {
+            background: #218838;
+        }
+
+        #stopGameBtn:hover {
+            background: #c82333 !important;
+        }
+
+        .controls {
+            display: flex;
+            text-align: center;
+            margin: 20px 0;
+            justify-content: space-between;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .question-card,
+            .admin-panel {
+                padding: 15px;
+                margin-top: 3px;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 14px;
+                margin: 5px;
+            }
+
+            .tab-content {
+                padding: 1px;
+            }
+
+            .welcome-screen {
+                margin-top: 3px;
+            }
+
+            .score {
+                margin: 0px;
+                font-size: 0.8em;
+                background: rgba(255, 255, 255, 0.2);
+                padding: 1.8px 15px;
+                border-radius: 25px;
+                display: inline-block;
+            }
+
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                padding: 8px;
+            }
+
+            /* .speech-btn {
+                display: block;
+                margin: 10px 0;
+                width: 100%;
+            } */
+
+            .controls {
+                display: flex;
+                text-align: center;
+                margin: 20px 0px;
+                flex-direction: column;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+        }
+
+        /**/
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <!-- <h1>🎮 Jogo de Códigos</h1> -->
+            <div class="score">
+                Pontuação: <span id="score">0</span> |
+                Questão: <span id="currentQuestion">1</span>/<span id="totalQuestions">0</span>
+            </div>
+        </div>
+
+        <!-- Sistema de Abas -->
+        <div class="tabs">
+            <button class="tab-btn active" id="gameTab">🎮 Jogo</button>
+            <button class="tab-btn" id="adminTab">⚙️ Admin</button>
+        </div>
+
+        <!-- Conteúdo da Aba Jogo -->
+        <div id="gameContent" class="tab-content">
+            <!-- Tela inicial -->
+            <div class="welcome-screen" id="welcomeScreen">
+                <h2>🎯 Bem-vindo ao Jogo de Códigos!</h2>
+                <p>Teste seus conhecimentos em programação</p>
+                <div class="stats">
+                    <p>📊 Total de perguntas: <span id="totalQuestionsDisplay">0</span></p>
+                </div>
+                <button id="toggleAutoSpeech" class="btn">🔊 Ativar Fala Automática</button>
+                <button class="btn" id="startGameMainBtn" style="margin-top: 20px; font-size: 18px;">🎮 Iniciar
+                    Jogo</button>
+            </div>
+
+            <!-- Card da pergunta -->
+            <div class="question-card" id="questionCard" style="display: none;">
+                <div class="question-type" id="questionType"></div>
+                <pre class="code-block" id="codeBlock"></pre>
+                <div class="question-text" id="questionText"></div>
+                <div class="options-container" id="optionsContainer"></div>
+                <!-- Área de feedback -->
+                <div class="feedback-area" id="feedbackArea"
+                    style="display: none; margin-top: 20px; padding: 15px; border-radius: 8px;">
+                    <div id="feedbackText" style="font-weight: bold; margin-bottom: 10px;"></div>
+                    <div id="explanationText" style="font-style: italic; color: #666;"></div>
+                </div>
+            </div>
+
+            <!-- Controles do jogo -->
+            <!-- Controles do jogo -->
+            <div class="controls">
+                <button class="btn" id="confirmBtn" disabled style="display: none;">Confirmar</button>
+                <button class="btn" id="nextBtn" style="display: none;">Próxima</button>
+                <button id="stopGameBtn" class="btn" style="display: none; background: #dc3545;">⏹️ Parar Jogo</button>
+            </div>
+
+        </div>
+
+        <!-- Conteúdo da Aba Admin -->
+        <div id="adminContent" class="tab-content" style="display: none;">
+            <div class="admin-panel">
+                <h3>📝 Adicionar Pergunta</h3>
+
+                <div class="form-group">
+                    <label>Tipo de Pergunta:</label>
+                    <select id="questionTypeSelect">
+                        <option value="what_does">O que este código faz?</option>
+                        <option value="complete_code">Complete o código</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Código:</label>
+                    <textarea id="codeInput"
+                        placeholder="Digite o código aqui com a formatação original (tabs, espaços, etc.)..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Pergunta:</label>
+                    <input type="text" id="questionInput" placeholder="Digite a pergunta...">
+                </div>
+
+                <div class="form-group">
+                    <label>Opções (uma por linha):</label>
+                    <textarea id="optionsInput" placeholder="Opção 1&#10;Opção 2&#10;Opção 3&#10;Opção 4"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Resposta Correta (número da opção, começando em 1):</label>
+                    <input type="number" id="correctAnswer" min="1" value="1">
+                </div>
+
+                <div class="form-group">
+                    <label>Texto para Falar ao Acertar:</label>
+                    <input type="text" id="correctFeedback" placeholder="Ex: Parabéns! Você acertou!"
+                        value="Parabéns! Você acertou!">
+                </div>
+
+                <div class="form-group">
+                    <label>Texto para Falar ao Errar:</label>
+                    <input type="text" id="incorrectFeedback"
+                        placeholder="Ex: Não foi dessa vez, mas continue tentando!"
+                        value="Não foi dessa vez, mas continue tentando!">
+                </div>
+
+                <div class="form-group">
+                    <label>Explicação da Resposta (será lida sempre):</label>
+                    <textarea id="explanation"
+                        placeholder="Digite uma explicação sobre a resposta correta..."></textarea>
+                </div>
+
+                <div class="controls">
+                    <button class="btn" id="addQuestionBtn">Adicionar Pergunta</button>
+                    <button class="btn" id="editQuestionBtn" style="display: none;">Salvar Edição</button>
+                    <button class="btn" id="cancelEditBtn" style="display: none;">Cancelar</button>
+                    <button class="btn" id="startGameBtn">Iniciar Jogo</button>
+                    <button class="btn" id="clearDataBtn">Limpar Dados</button>
+                </div>
+
+                <div class="controls">
+                    <button class="btn" id="exportBtn">📤 Exportar</button>
+                    <button class="btn" id="importBtn">📥 Importar</button>
+                    <input type="file" id="fileInput" accept=".json" style="display: none;">
+                </div>
+
+                <div class="form-group">
+                    <label>🔍 Buscar Perguntas:</label>
+                    <input type="text" id="searchInput" placeholder="Digite para buscar nas perguntas...">
+                </div>
+
+                <h4>📋 Perguntas Cadastradas:</h4>
+                <div class="questions-list" id="questionsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class CodeQuizGame {
+            constructor() {
+                this.db = null;
+                this.questions = [];
+                this.filteredQuestions = [];
+                this.currentQuestionIndex = 0;
+                this.score = 0;
+                this.selectedOption = null;
+                this.gameMode = false;
+                this.editingQuestionId = null;
+                this.currentTab = 'game'; // Nova propriedade para controlar abas
+                this.autoSpeechEnabled = false;//controlar leitura automática
+                // Perguntas padrão (serão adicionadas automaticamente)
+                this.defaultQuestions = [
+                    {
+                        type: 'what_does',
+                        code: `function soma(a, b) {
+    return a + b;
+}
+console.log(soma(5, 3));`,
+                        question: 'O que este código JavaScript faz?',
+                        options: [
+                            'Multiplica dois números',
+                            'Soma dois números e exibe o resultado',
+                            'Subtrai dois números',
+                            'Divide dois números'
+                        ],
+                        correctAnswer: 1,
+                        correctFeedback: 'Parabéns! Você acertou!',
+                        incorrectFeedback: 'Não foi dessa vez, mas continue tentando!',
+                        explanation: 'A função soma() recebe dois parâmetros, os soma com o operador + e retorna o resultado. O console.log() exibe o valor 8.'
+                    },
+                    {
+                        type: 'complete_code',
+                        code: `for (let i = 0; i < 5; i++) {
+    console.log(___);
+}`,
+                        question: 'Complete o código para imprimir os números de 0 a 4:',
+                        options: [
+                            'i + 1',
+                            'i',
+                            '5',
+                            'i - 1'
+                        ],
+                        correctAnswer: 1,
+                        correctFeedback: 'Perfeito! Você completou corretamente!',
+                        incorrectFeedback: 'Não foi dessa vez, tente novamente!',
+                        explanation: 'A variável i já contém os valores de 0 a 4 durante o loop, então basta imprimir i.'
+                    },
+                    {
+                        type: 'what_does',
+                        code: `let frutas = ['maçã', 'banana', 'laranja'];
+console.log(frutas.length);`,
+                        question: 'Qual será o resultado deste código?',
+                        options: [
+                            'maçã, banana, laranja',
+                            '3',
+                            'undefined',
+                            'frutas'
+                        ],
+                        correctAnswer: 1,
+                        correctFeedback: 'Excelente! Você entende arrays!',
+                        incorrectFeedback: 'Quase lá! Lembre-se do que .length retorna.',
+                        explanation: 'O método .length retorna a quantidade de elementos no array. Como há 3 frutas, o resultado é 3.'
+                    }
+                ];
+
+                this.initDB().then(() => {
+                    this.loadQuestions();
+                });
+                this.initElements();
+                this.initEventListeners();
+            }
+
+            async initDB() {
+                return new Promise((resolve, reject) => {
+                    const request = indexedDB.open('CodeQuizDB', 1);
+
+                    request.onerror = () => reject(request.error);
+                    request.onsuccess = () => {
+                        this.db = request.result;
+                        resolve();
+                    };
+
+                    request.onupgradeneeded = (event) => {
+                        const db = event.target.result;
+                        const store = db.createObjectStore('questions', { keyPath: 'id', autoIncrement: true });
+                        store.createIndex('type', 'type', { unique: false });
+                    };
+                });
+            }
+
+            initElements() {
+                this.elements = {
+                    score: document.getElementById('score'),
+                    currentQuestion: document.getElementById('currentQuestion'),
+                    totalQuestions: document.getElementById('totalQuestions'),
+                    welcomeScreen: document.getElementById('welcomeScreen'),
+                    totalQuestionsDisplay: document.getElementById('totalQuestionsDisplay'),
+                    questionCard: document.getElementById('questionCard'),
+                    questionType: document.getElementById('questionType'),
+                    codeBlock: document.getElementById('codeBlock'),
+                    questionText: document.getElementById('questionText'),
+                    optionsContainer: document.getElementById('optionsContainer'),
+                    confirmBtn: document.getElementById('confirmBtn'),
+                    nextBtn: document.getElementById('nextBtn'),
+                    stopGameBtn: document.getElementById('stopGameBtn'),
+                    questionsList: document.getElementById('questionsList')
+                };
+            }
+
+            initEventListeners() {
+                // Event listeners das abas
+                document.getElementById('gameTab')?.addEventListener('click', () => this.switchTab('game'));
+                document.getElementById('adminTab')?.addEventListener('click', () => this.switchTab('admin'));
+
+                // Event listeners principais
+                this.elements.confirmBtn?.addEventListener('click', () => this.confirmAnswer());
+                this.elements.nextBtn?.addEventListener('click', () => this.nextQuestion());
+                this.elements.stopGameBtn?.addEventListener('click', () => this.stopGame());
+
+                // Botão da tela inicial
+                document.getElementById('startGameMainBtn')?.addEventListener('click', () => this.startGame());
+
+                // Admin controls
+                document.getElementById('toggleAutoSpeech')?.addEventListener('click', () => this.toggleAutoSpeech());
+                document.getElementById('addQuestionBtn')?.addEventListener('click', () => this.addQuestion());
+                document.getElementById('editQuestionBtn')?.addEventListener('click', () => this.saveEdit());
+                document.getElementById('cancelEditBtn')?.addEventListener('click', () => this.cancelEdit());
+                document.getElementById('startGameBtn')?.addEventListener('click', () => this.startGameFromAdmin());
+                document.getElementById('clearDataBtn')?.addEventListener('click', () => this.clearData());
+                document.getElementById('exportBtn')?.addEventListener('click', () => this.exportQuestions());
+                document.getElementById('importBtn')?.addEventListener('click', () => this.importQuestions());
+                document.getElementById('fileInput')?.addEventListener('change', (e) => this.handleFileImport(e));
+                document.getElementById('searchInput')?.addEventListener('input', (e) => this.searchQuestions(e.target.value));
+            }
+
+            // Novo método para gerenciar as abas
+            switchTab(tabName) {
+                this.currentTab = tabName;
+
+                // Atualizar botões das abas
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                document.getElementById(tabName + 'Tab').classList.add('active');
+
+                // Mostrar/esconder conteúdo
+                const gameContent = document.getElementById('gameContent');
+                const adminContent = document.getElementById('adminContent');
+
+                if (tabName === 'game') {
+                    gameContent.style.display = 'block';
+                    adminContent.style.display = 'none';
+
+                    // Manter estado do jogo
+                    if (this.gameMode) {
+                        this.elements.welcomeScreen.style.display = 'none';
+                        this.elements.questionCard.style.display = 'block';
+                    } else {
+                        this.elements.welcomeScreen.style.display = 'block';
+                        this.elements.questionCard.style.display = 'none';
+                    }
+                } else if (tabName === 'admin') {
+                    gameContent.style.display = 'none';
+                    adminContent.style.display = 'block';
+                }
+            }
+
+            formatCode(code) {
+                return code
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
+
+            async loadQuestions() {
+                const transaction = this.db.transaction(['questions'], 'readonly');
+                const store = transaction.objectStore('questions');
+                const request = store.getAll();
+
+                request.onsuccess = async () => {
+                    this.questions = request.result;
+
+                    // Adicionar perguntas padrão se não houver perguntas salvas
+                    if (this.questions.length === 0) {
+                        await this.addDefaultQuestions();
+                        // Recarregar após adicionar perguntas padrão
+                        const newRequest = this.db.transaction(['questions'], 'readonly').objectStore('questions').getAll();
+                        newRequest.onsuccess = () => {
+                            this.questions = newRequest.result;
+                            this.updateQuestionDisplay();
+                        };
+                    } else {
+                        this.updateQuestionDisplay();
+                    }
+                };
+                // Garantir que botões estejam escondidos na inicialização
+                this.elements.nextBtn.style.display = 'none';
+                this.elements.stopGameBtn.style.display = 'none';
+            }
+            async addDefaultQuestions() {
+                const transaction = this.db.transaction(['questions'], 'readwrite');
+                const store = transaction.objectStore('questions');
+
+                for (const question of this.defaultQuestions) {
+                    await store.add(question);
+                }
+            }
+
+            updateQuestionDisplay() {
+                this.filteredQuestions = [...this.questions];
+                this.updateQuestionsList();
+                this.elements.totalQuestions.textContent = this.questions.length;
+                this.elements.totalQuestionsDisplay.textContent = this.questions.length;
+
+                // Inicializar na aba de jogo apenas na primeira vez
+                if (this.currentTab === 'game' && !this.gameMode) {
+                    this.switchTab('game');
+                }
+            }
+
+            async addQuestion() {
+                if (this.editingQuestionId) {
+                    this.saveEdit();
+                    return;
+                }
+
+                const type = document.getElementById('questionTypeSelect').value;
+                const code = document.getElementById('codeInput').value.trim();
+                const question = document.getElementById('questionInput').value.trim();
+                const optionsText = document.getElementById('optionsInput').value.trim();
+                const correctAnswer = parseInt(document.getElementById('correctAnswer').value);
+                const correctFeedback = document.getElementById('correctFeedback').value.trim();
+                const incorrectFeedback = document.getElementById('incorrectFeedback').value.trim();
+                const explanation = document.getElementById('explanation').value.trim();
+
+                if (!code || !question || !optionsText) {
+                    alert('Por favor, preencha todos os campos obrigatórios!');
+                    return;
+                }
+
+                const options = optionsText.split('\n').map(opt => opt.trim()).filter(opt => opt);
+
+                if (options.length < 2) {
+                    alert('Adicione pelo menos 2 opções!');
+                    return;
+                }
+
+                if (correctAnswer < 1 || correctAnswer > options.length) {
+                    alert('Número da resposta correta inválido!');
+                    return;
+                }
+
+                const questionData = {
+                    type,
+                    code,
+                    question,
+                    options,
+                    correctAnswer: correctAnswer - 1,
+                    correctFeedback: correctFeedback || 'Parabéns! Você acertou!',
+                    incorrectFeedback: incorrectFeedback || 'Não foi dessa vez, mas continue tentando!',
+                    explanation: explanation || ''
+                };
+
+                const transaction = this.db.transaction(['questions'], 'readwrite');
+                const store = transaction.objectStore('questions');
+                await store.add(questionData);
+
+                this.clearForm();
+                this.loadQuestions();
+                alert('Pergunta adicionada com sucesso!');
+            }
+
+            clearForm() {
+                document.getElementById('codeInput').value = '';
+                document.getElementById('questionInput').value = '';
+                document.getElementById('optionsInput').value = '';
+                document.getElementById('correctAnswer').value = '1';
+                document.getElementById('correctFeedback').value = 'Parabéns! Você acertou!';
+                document.getElementById('incorrectFeedback').value = 'Não foi dessa vez, mas continue tentando!';
+                document.getElementById('explanation').value = '';
+            }
+
+            updateQuestionsList() {
+                const list = this.elements.questionsList;
+                list.innerHTML = '';
+
+                this.filteredQuestions.forEach((q, index) => {
+                    const originalIndex = this.questions.findIndex(quest => quest.id === q.id);
+                    const item = document.createElement('div');
+                    item.className = 'question-item';
+                    item.innerHTML = `
+                        <strong>${q.type === 'what_does' ? '❓' : '🔧'} ${originalIndex + 1}:</strong>
+                        ${q.question.substring(0, 50)}${q.question.length > 50 ? '...' : ''}
+                        <div style="margin-top: 5px;">
+                            <button class="btn" style="padding: 5px 10px; font-size: 12px; margin-right: 5px;" onclick="game.editQuestion(${q.id})">✏️ Editar</button>
+                            <button class="btn" style="padding: 5px 10px; font-size: 12px; background: #dc3545;" onclick="game.deleteQuestion(${q.id})">🗑️ Excluir</button>
+                        </div>
+                    `;
+                    list.appendChild(item);
+                });
+            }
+
+            startGame() {
+                if (this.questions.length === 0) {
+                    alert('Adicione pelo menos uma pergunta primeiro!');
+                    return;
+                }
+
+                this.gameMode = true;
+                this.currentQuestionIndex = 0;
+                this.score = 0;
+                this.selectedOption = null;
+
+                // Shuffle questions
+                this.questions = this.questions.sort(() => Math.random() - 0.5);
+
+                this.elements.welcomeScreen.style.display = 'none';
+                this.elements.questionCard.style.display = 'block';
+
+                this.showQuestion();
+            }
+
+            // Método para iniciar jogo a partir do admin
+            startGameFromAdmin() {
+                this.startGame();
+                this.switchTab('game'); // Muda para a aba do jogo
+            }
+
+            showQuestion() {
+                const question = this.questions[this.currentQuestionIndex];
+
+                this.elements.questionType.textContent =
+                    question.type === 'what_does' ? '❓ O que este código faz?' : '🔧 Complete o código';
+
+                this.elements.codeBlock.innerHTML = this.formatCode(question.code);
+                this.elements.questionText.innerHTML = `
+                    ${question.question}
+                    <button class="speech-btn" onclick="game.speakQuestion()">🔊 Ouvir</button>
+                `;
+
+                this.elements.optionsContainer.innerHTML = '';
+                question.options.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.className = 'option';
+                    optionElement.textContent = option;
+                    optionElement.addEventListener('click', () => this.selectOption(index));
+                    this.elements.optionsContainer.appendChild(optionElement);
+                });
+
+                this.elements.currentQuestion.textContent = this.currentQuestionIndex + 1;
+                this.elements.confirmBtn.disabled = true;
+                this.elements.confirmBtn.style.display = 'inline-block';
+                this.elements.nextBtn.style.display = 'none';
+                this.elements.stopGameBtn.style.display = 'none';
+                this.selectedOption = null;
+                if (this.autoSpeechEnabled) {
+                    setTimeout(() => {
+                        this.speakText(question.question);
+                    }, 800);
+                }
+                // Esconder área de feedback ao mostrar nova pergunta
+                const feedbackArea = document.getElementById('feedbackArea');
+                if (feedbackArea) {
+                    feedbackArea.style.display = 'none';
+                }
+            }
+
+            selectOption(index) {
+                document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+                document.querySelectorAll('.option')[index].classList.add('selected');
+                this.selectedOption = index;
+                this.elements.confirmBtn.disabled = false;
+            }
+
+            confirmAnswer() {
+                const question = this.questions[this.currentQuestionIndex];
+                const options = document.querySelectorAll('.option');
+                const isCorrect = this.selectedOption === question.correctAnswer;
+                const feedbackArea = document.getElementById('feedbackArea');
+                const feedbackText = document.getElementById('feedbackText');
+                const explanationText = document.getElementById('explanationText');
+
+                options.forEach((opt, index) => {
+                    if (index === question.correctAnswer) {
+                        opt.classList.add('correct');
+                    } else if (index === this.selectedOption) {
+                        opt.classList.add('incorrect');
+                    }
+                });
+
+                if (isCorrect) {
+                    this.score += 10;
+                    this.elements.score.textContent = this.score;
+                    feedbackText.textContent = question.correctFeedback;
+                    feedbackText.style.color = '#28a745'; // Verde para acerto
+                } else {
+                    feedbackText.textContent = question.incorrectFeedback;
+                    feedbackText.style.color = '#dc3545'; // Vermelho para erro
+                }
+
+                // Mostrar explicação se existir
+                if (question.explanation) {
+                    explanationText.textContent = question.explanation;
+                    explanationText.style.display = 'block';
+                } else {
+                    explanationText.style.display = 'none';
+                }
+
+                // Mostrar área de feedback
+                feedbackArea.style.display = 'block';
+
+                // Falar o feedback se a opção estiver ativada
+                if (this.autoSpeechEnabled) {
+                    const fullFeedback = question.explanation ?
+                        `${feedbackText.textContent} ${question.explanation}` : feedbackText.textContent;
+                    setTimeout(() => {
+                        this.speakText(fullFeedback);
+                    }, 500);
+                }
+
+                this.elements.confirmBtn.style.display = 'none';
+                this.elements.nextBtn.style.display = 'inline-block';
+                this.elements.stopGameBtn.style.display = 'inline-block';
+            }
+
+            nextQuestion() {
+                this.currentQuestionIndex++;
+
+                if (this.currentQuestionIndex >= this.questions.length) {
+                    alert(`Jogo finalizado! Pontuação final: ${this.score}`);
+                    this.gameMode = false;
+                    this.elements.questionCard.style.display = 'none';
+                    this.elements.welcomeScreen.style.display = 'block';
+                    this.elements.stopGameBtn.style.display = 'none';
+                    this.elements.nextBtn.style.display = 'none'; // Esconder botão "Próxima"
+                    this.elements.confirmBtn.style.display = 'none'; // Esconder botão "Confirmar" também
+                    return;
+                }
+
+                this.showQuestion();
+            }
+
+            stopGame() {
+                if (confirm('Tem certeza que deseja parar o jogo? Seu progresso será perdido.')) {
+                    // Parar síntese de voz se estiver falando
+                    if ('speechSynthesis' in window) {
+                        speechSynthesis.cancel();
+                    }
+
+                    // Reset do estado do jogo
+                    this.gameMode = false;
+                    this.currentQuestionIndex = 0;
+                    this.score = 0;
+                    this.selectedOption = null;
+
+                    // Atualizar interface
+                    this.elements.score.textContent = '0';
+                    this.elements.questionCard.style.display = 'none';
+                    this.elements.welcomeScreen.style.display = 'block';
+
+                    alert('Jogo pausado! Você pode iniciar um novo jogo quando quiser.');
+                }
+                // Garantir que botões fiquem escondidos na tela inicial
+                this.elements.nextBtn.style.display = 'none';
+                this.elements.stopGameBtn.style.display = 'none';
+            }
+
+            speakQuestion() {
+                const question = this.questions[this.currentQuestionIndex];
+
+                // Adiciona interação do usuário antes de falar (obrigatório no mobile)
+                const button = event.target;
+                button.style.backgroundColor = '#007bff';
+                button.textContent = '🔊 Falando...';
+
+                const text = question.question;
+                this.speakText(text);
+
+                // Restaura o botão após 3 segundos
+                setTimeout(() => {
+                    button.style.backgroundColor = '';
+                    button.textContent = '🔊 Ouvir';
+                }, 3000);
+            }
+
+            speakText(text) {
+                if ('speechSynthesis' in window) {
+                    speechSynthesis.cancel();
+
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'pt-BR';
+                    utterance.rate = 0.9;
+                    utterance.pitch = 1;
+                    utterance.volume = 1;
+
+                    if (speechSynthesis.getVoices().length === 0) {
+                        speechSynthesis.addEventListener('voiceschanged', () => {
+                            this.setVoice(utterance);
+                            speechSynthesis.speak(utterance);
+                        }, { once: true });
+                    } else {
+                        this.setVoice(utterance);
+                        speechSynthesis.speak(utterance);
+                    }
+                } else {
+                    alert('Síntese de voz não suportada neste navegador.');
+                }
+            }
+            isMobile() {
+                return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            }
+
+            setVoice(utterance) {
+                const voices = speechSynthesis.getVoices();
+                const ptBrVoice = voices.find(voice =>
+                    voice.lang === 'pt-BR' || voice.lang === 'pt'
+                );
+
+                if (ptBrVoice) {
+                    utterance.voice = ptBrVoice;
+                }
+            }
+
+            toggleAutoSpeech() {
+                const button = document.getElementById('toggleAutoSpeech');
+
+                if (!this.autoSpeechEnabled) {
+                    // Ativar modo de fala automática
+                    try {
+                        // Teste inicial para "acordar" a síntese de voz no mobile
+                        this.testSpeech();
+
+                        this.autoSpeechEnabled = true;
+                        button.textContent = '🔇 Desativar Fala Automática';
+                        button.style.backgroundColor = '#28a745';
+
+                        alert('Fala automática ativada! Agora as perguntas e feedbacks serão lidos automaticamente.');
+
+                    } catch (error) {
+                        alert('Erro ao ativar fala automática. Tente novamente.');
+                    }
+                } else {
+                    // Desativar modo de fala automática
+                    this.autoSpeechEnabled = false;
+                    speechSynthesis.cancel();
+
+                    button.textContent = '🔊 Ativar Fala Automática';
+                    button.style.backgroundColor = '';
+
+                    alert('Fala automática desativada.');
+                }
+            }
+
+            testSpeech() {
+                return new Promise((resolve, reject) => {
+                    if ('speechSynthesis' in window) {
+                        const utterance = new SpeechSynthesisUtterance('Fala automática ativada');
+                        utterance.lang = 'pt-BR';
+                        utterance.rate = 0.9;
+                        utterance.volume = 0.1;
+
+                        utterance.onend = () => resolve();
+                        utterance.onerror = () => reject();
+
+                        if (speechSynthesis.getVoices().length === 0) {
+                            speechSynthesis.addEventListener('voiceschanged', () => {
+                                this.setVoice(utterance);
+                                speechSynthesis.speak(utterance);
+                            }, { once: true });
+                        } else {
+                            this.setVoice(utterance);
+                            speechSynthesis.speak(utterance);
+                        }
+                    } else {
+                        reject('Speech not supported');
+                    }
+                });
+            }
+
+            async editQuestion(id) {
+                const question = this.questions.find(q => q.id === id);
+                if (!question) return;
+
+                this.editingQuestionId = id;
+
+                document.getElementById('questionTypeSelect').value = question.type;
+                document.getElementById('codeInput').value = question.code;
+                document.getElementById('questionInput').value = question.question;
+                document.getElementById('optionsInput').value = question.options.join('\n');
+                document.getElementById('correctAnswer').value = question.correctAnswer + 1;
+                document.getElementById('correctFeedback').value = question.correctFeedback || 'Parabéns! Você acertou!';
+                document.getElementById('incorrectFeedback').value = question.incorrectFeedback || 'Não foi dessa vez, mas continue tentando!';
+                document.getElementById('explanation').value = question.explanation || '';
+
+                document.getElementById('addQuestionBtn').style.display = 'none';
+                document.getElementById('editQuestionBtn').style.display = 'inline-block';
+                document.getElementById('cancelEditBtn').style.display = 'inline-block';
+            }
+
+            async saveEdit() {
+                if (!this.editingQuestionId) return;
+
+                const type = document.getElementById('questionTypeSelect').value;
+                const code = document.getElementById('codeInput').value.trim();
+                const question = document.getElementById('questionInput').value.trim();
+                const optionsText = document.getElementById('optionsInput').value.trim();
+                const correctAnswer = parseInt(document.getElementById('correctAnswer').value);
+                const correctFeedback = document.getElementById('correctFeedback').value.trim();
+                const incorrectFeedback = document.getElementById('incorrectFeedback').value.trim();
+                const explanation = document.getElementById('explanation').value.trim();
+
+                if (!code || !question || !optionsText) {
+                    alert('Por favor, preencha todos os campos obrigatórios!');
+                    return;
+                }
+
+                const options = optionsText.split('\n').map(opt => opt.trim()).filter(opt => opt);
+
+                if (options.length < 2) {
+                    alert('Adicione pelo menos 2 opções!');
+                    return;
+                }
+
+                if (correctAnswer < 1 || correctAnswer > options.length) {
+                    alert('Número da resposta correta inválido!');
+                    return;
+                }
+
+                const questionData = {
+                    id: this.editingQuestionId,
+                    type,
+                    code,
+                    question,
+                    options,
+                    correctAnswer: correctAnswer - 1,
+                    correctFeedback: correctFeedback || 'Parabéns! Você acertou!',
+                    incorrectFeedback: incorrectFeedback || 'Não foi dessa vez, mas continue tentando!',
+                    explanation: explanation || ''
+                };
+
+                const transaction = this.db.transaction(['questions'], 'readwrite');
+                const store = transaction.objectStore('questions');
+                await store.put(questionData);
+
+                this.cancelEdit();
+                this.loadQuestions();
+                alert('Pergunta editada com sucesso!');
+            }
+
+            cancelEdit() {
+                this.editingQuestionId = null;
+                this.clearForm();
+
+                document.getElementById('addQuestionBtn').style.display = 'inline-block';
+                document.getElementById('editQuestionBtn').style.display = 'none';
+                document.getElementById('cancelEditBtn').style.display = 'none';
+            }
+
+            async deleteQuestion(id) {
+                if (confirm('Tem certeza que deseja excluir esta pergunta?')) {
+                    const transaction = this.db.transaction(['questions'], 'readwrite');
+                    const store = transaction.objectStore('questions');
+                    await store.delete(id);
+
+                    this.loadQuestions();
+                    alert('Pergunta excluída com sucesso!');
+                }
+            }
+
+            searchQuestions(searchTerm) {
+                if (!searchTerm.trim()) {
+                    this.filteredQuestions = [...this.questions];
+                } else {
+                    const term = searchTerm.toLowerCase();
+                    this.filteredQuestions = this.questions.filter(q =>
+                        q.question.toLowerCase().includes(term) ||
+                        q.code.toLowerCase().includes(term) ||
+                        q.options.some(opt => opt.toLowerCase().includes(term))
+                    );
+                }
+                this.updateQuestionsList();
+            }
+
+            exportQuestions() {
+                if (this.questions.length === 0) {
+                    alert('Não há perguntas para exportar!');
+                    return;
+                }
+
+                const dataStr = JSON.stringify(this.questions, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(dataBlob);
+                link.download = `perguntas_codigo_${new Date().toISOString().split('T')[0]}.json`;
+                link.click();
+
+                alert('Perguntas exportadas com sucesso!');
+            }
+
+            importQuestions() {
+                document.getElementById('fileInput').click();
+            }
+
+            async handleFileImport(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                try {
+                    const text = await file.text();
+                    const importedQuestions = JSON.parse(text);
+
+                    if (!Array.isArray(importedQuestions)) {
+                        throw new Error('Formato inválido');
+                    }
+
+                    // Validar estrutura das perguntas
+                    for (const q of importedQuestions) {
+                        if (!q.code || !q.question || !q.options || !Array.isArray(q.options)) {
+                            throw new Error('Estrutura de pergunta inválida');
+                        }
+                    }
+
+                    const transaction = this.db.transaction(['questions'], 'readwrite');
+                    const store = transaction.objectStore('questions');
+
+                    for (const question of importedQuestions) {
+                        // Remove o ID para evitar conflitos
+                        delete question.id;
+
+                        // Garante que os campos de feedback existam
+                        question.correctFeedback = question.correctFeedback || 'Parabéns! Você acertou!';
+                        question.incorrectFeedback = question.incorrectFeedback || 'Não foi dessa vez, mas continue tentando!';
+                        question.explanation = question.explanation || '';
+
+                        await store.add(question);
+                    }
+
+                    this.loadQuestions();
+                    alert(`${importedQuestions.length} perguntas importadas com sucesso!`);
+
+                } catch (error) {
+                    alert('Erro ao importar arquivo: ' + error.message);
+                }
+
+                // Limpar o input
+                event.target.value = '';
+            }
+
+            toggleAdmin() {
+                const modal = document.getElementById('adminModal');
+                const isVisible = modal.style.display !== 'none';
+
+                if (isVisible) {
+                    // Fechando o modal
+                    modal.style.display = 'none';
+                    this.elements.adminToggle.textContent = 'Admin';
+
+                    // Se estava no jogo, volta para o jogo
+                    if (this.gameMode && this.questions.length > 0) {
+                        this.elements.questionCard.style.display = 'block';
+                    } else {
+                        // Se não estava no jogo, mostra a tela inicial
+                        this.elements.welcomeScreen.style.display = 'block';
+                    }
+                } else {
+                    // Abrindo o modal
+                    modal.style.display = 'flex';
+                    this.elements.adminToggle.textContent = 'Fechar Admin';
+
+                    // Esconde outras telas
+                    this.elements.questionCard.style.display = 'none';
+                    this.elements.welcomeScreen.style.display = 'none';
+                }
+            }
+
+            async clearData() {
+                if (confirm('Tem certeza que deseja apagar todas as perguntas?')) {
+                    const transaction = this.db.transaction(['questions'], 'readwrite');
+                    const store = transaction.objectStore('questions');
+                    await store.clear();
+                    this.loadQuestions();
+                    alert('Dados limpos com sucesso!');
+                }
+            }
+        }
+
+
+        // Initialize game when page loads
+        let game;
+        window.addEventListener('load', () => {
+            game = new CodeQuizGame();
+        });
+    </script>
+</body>
+
+</html>
